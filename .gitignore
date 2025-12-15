@@ -1,5 +1,8 @@
 #data
 data/*
 
+#chroma db persistence
+*.chroma_db/
+
 #python cache
 __pycache__/
