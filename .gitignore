@@ -10,3 +10,9 @@ __pycache__/
 #environment files
 .env
 .venv/
+
+# macOS
+.DS_Store
+
+# IDE files
+.vscode/
