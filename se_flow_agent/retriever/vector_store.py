@@ -63,7 +63,7 @@ class VectorStoreInterface(ABC):
         pass
 
 
-class ChromaDBVectorStore(VectorStoreInterface):
+class ChromaVectorStore(VectorStoreInterface):
     def __init__(
         self,
         collection_name: str = "default_collection",
@@ -201,7 +201,7 @@ class ChromaDBVectorStore(VectorStoreInterface):
         self.collection = self.client.get_or_create_collection(name=self.collection_name)
 
 if __name__ == "__main__":
-    vector_store = ChromaDBVectorStore(collection_name="test_collection")
+    vector_store = ChromaVectorStore(collection_name="test_collection")
     print("Vector store initialized.")
 
     # Add sample data
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     print("Peeked documents:", peeked)
 
     # Clear the collection
-    vector_store.clear()
-    print("Vector store cleared.")
-    count_after_clear = vector_store.count()
-    print("Total documents after clear:", count_after_clear)
+    # vector_store.clear()
+    # print("Vector store cleared.")
+    # count_after_clear = vector_store.count()
+    # print("Total documents after clear:", count_after_clear)
