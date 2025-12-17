@@ -1,5 +1,5 @@
 from se_flow_agent.retriever.vector_store import ChromaVectorStore
-from se_flow_agent.retriever.embedding import embed_texts
+from se_flow_agent.retriever.embedding import SentenceTransformerEmbedder
 from abc import ABC, abstractmethod
 from typing import List, Dict, Optional
 from langchain.tools import tool
@@ -18,7 +18,7 @@ class SimpleRetriever(RetrieverInterface):
         self.vector_store = vector_store
 
     def retrieve(self, query: str, top_k: int = 5) -> List[Dict[str, any]]:
-        query_embedding = embed_texts([query])[0]
+        query_embedding = SentenceTransformerEmbedder().embed_texts([query])[0]
         results = self.vector_store.query(embedding=query_embedding, top_k=top_k)
         return results
 

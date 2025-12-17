@@ -218,7 +218,7 @@ class ChromaVectorStore(VectorStoreInterface):
 
 
 if __name__ == "__main__":
-    vector_store = ChromaDBVectorStore(
+    vector_store = ChromaVectorStore(
         collection_name="test_collection",
         metadata={"hnsw:space": "cosine", "hnsw:construction_ef": 200},
     )
