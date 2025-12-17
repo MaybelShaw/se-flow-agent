@@ -68,13 +68,22 @@ class ChromaVectorStore(VectorStoreInterface):
         self,
         collection_name: str = "default_collection",
         persist_directory: Optional[str] = None,
+        metadata: Optional[Dict[str, str | int]] = None,
     ):
         if persist_directory is None:
             root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             persist_directory = os.path.join(root_path, "data", "chroma_db")
         self.client = chromadb.PersistentClient(path=persist_directory)
         self.collection_name = collection_name
-        self.collection = self.client.get_or_create_collection(name=collection_name)
+
+        if metadata is not None:
+            self.collection_metadata = metadata
+            self.collection = self.client.get_or_create_collection(
+                name=collection_name, metadata=self.collection_metadata
+            )
+        else:
+            self.collection_metadata = None
+            self.collection = self.client.get_or_create_collection(name=collection_name)
 
     def add(
         self,
@@ -196,12 +205,23 @@ class ChromaVectorStore(VectorStoreInterface):
         return items
 
     def clear(self) -> None:
-        # Drop and recreate the collection to remove all entries without requiring filters
+        # Drop and recreate the collection to remove all entries
         self.client.delete_collection(self.collection_name)
-        self.collection = self.client.get_or_create_collection(name=self.collection_name)
+        if self.collection_metadata is not None:
+            self.collection = self.client.get_or_create_collection(
+                name=self.collection_name, metadata=self.collection_metadata
+            )
+        else:
+            self.collection = self.client.get_or_create_collection(
+                name=self.collection_name
+            )
+
 
 if __name__ == "__main__":
-    vector_store = ChromaVectorStore(collection_name="test_collection")
+    vector_store = ChromaDBVectorStore(
+        collection_name="test_collection",
+        metadata={"hnsw:space": "cosine", "hnsw:construction_ef": 200},
+    )
     print("Vector store initialized.")
 
     # Add sample data
