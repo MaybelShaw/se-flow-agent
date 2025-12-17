@@ -6,3 +6,7 @@ data/*
 
 #python cache
 __pycache__/
+
+#environment files
+.env
+.venv/
